@@ -1,25 +1,40 @@
 <!DOCTYPE html>
-<html lang="ko" class="dark">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI YouTube Searcher & Universal Navigator</title>
+  <title>AI TubeSearch | Warm Editorial</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            yt: {
-              bg: '#0f0f0f',
-              card: '#1f1f1f',
-              border: '#2f2f2f',
-              hover: '#272727',
-              red: '#ff0000',
-              accent: '#cc0000',
+            warm: {
+              bg: '#F4F0EA',
+              card: '#FFFFFF',
+              cardSub: '#FBF9F5',
+              panel: '#FAF8F5',
+              surface: '#F4EFE6',
+              border: '#E7E0D4',
+              borderDark: '#DCD4C6',
+              text: '#1C2E24',
+              body: '#3D3935',
+              muted: '#7D7568',
+            },
+            forest: {
+              DEFAULT: '#234B3D',
+              hover: '#1B3B2F',
+              dark: '#162E25',
+              light: '#EAF1ED',
+            },
+            terracotta: {
+              DEFAULT: '#D95338',
+              hover: '#C8482E',
+              bg: '#FDF1EC',
+              border: '#F6D9CE',
             }
           }
         }
@@ -33,74 +48,35 @@
   <!-- Marked.js for Markdown Rendering -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <style>
-    /* 유튜브 다크 테마 커스텀 스크롤바 */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #121212;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #333333;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555555;
-    }
-
-    /* 마크다운 렌더링 스타일 */
-    .markdown-body p {
-      margin-bottom: 0.5rem;
-    }
-    .markdown-body p:last-child {
-      margin-bottom: 0;
-    }
-    .markdown-body strong {
-      color: #ef4444;
-      font-weight: 700;
-    }
-    .markdown-body ul {
-      list-style-type: disc;
-      margin-left: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
-    .markdown-body ol {
-      list-style-type: decimal;
-      margin-left: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
-    .markdown-body code {
-      background-color: #272727;
-      padding: 0.15rem 0.35rem;
-      border-radius: 0.25rem;
-      color: #fca5a5;
-      font-family: monospace;
-    }
-  </style>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/static/style.css" />
 
   <!-- YouTube IFrame Player API -->
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 
-<body class="bg-[#0f0f0f] text-zinc-100 min-h-screen flex flex-col font-sans antialiased selection:bg-red-600 selection:text-white">
+<body class="bg-[#F4F0EA] text-[#22201D] min-h-screen flex flex-col font-sans antialiased selection:bg-[#D95338] selection:text-white">
 
   <!-- ================= 1. 상단 네비게이션 헤더 ================= -->
-  <header class="sticky top-0 z-40 bg-[#0f0f0f]/95 backdrop-blur border-b border-[#272727] px-4 lg:px-8 py-3 flex items-center justify-between gap-4">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#E7E0D4] px-4 lg:px-8 py-3 flex items-center justify-between gap-4">
     
-    <!-- 좌측 로고 -->
-    <div class="flex items-center gap-2 shrink-0">
-      <div class="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/30">
+    <!-- 좌측 로고 & 브랜드 -->
+    <div class="flex items-center gap-2.5 shrink-0">
+      <div class="w-9 h-9 rounded-xl bg-[#234B3D] flex items-center justify-center shadow-md shadow-[#234B3D]/20">
         <i class="ph-fill ph-youtube-logo text-2xl text-white"></i>
       </div>
       <div>
-        <span class="text-base font-extrabold tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-          AI YouTube Searcher
-        </span>
-        <span class="hidden sm:inline-block ml-1.5 px-2 py-0.5 text-[10px] font-semibold bg-red-600/20 text-red-400 rounded-full border border-red-500/30">
-          Gemini 3.8 Flash & Universal Index
-        </span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-base font-extrabold tracking-tight text-[#1C2E24]">
+            AI TubeSearch
+          </span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold bg-[#EBE3D3] text-[#5C5243] rounded-full border border-[#DFD6C4]">
+            Warm Editorial
+          </span>
+        </div>
+        <p class="text-[11px] text-[#7D7568] font-medium">
+          Gemini 3.8 Flash &amp; 에디토리얼 인텔리전스
+        </p>
       </div>
     </div>
 
@@ -111,16 +87,16 @@
           <input 
             type="text" 
             id="url-input" 
-            placeholder="유튜브 링크 입력 (예: https://www.youtube.com/watch?v=LQSsaj4FixI)" 
-            class="w-full bg-[#121212] border border-[#303030] focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-l-full px-4 py-2.5 pl-10 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition"
+            placeholder="https://www.youtube.com/watch?v=LQSsaj4FixI" 
+            class="w-full bg-white border border-[#DCD4C6] focus:border-[#234B3D] focus:ring-1 focus:ring-[#234B3D] rounded-l-xl px-4 py-2.5 pl-10 text-xs sm:text-sm text-[#1C2E24] placeholder-[#A39B8E] outline-none transition shadow-inner"
             required
           />
-          <i class="ph-bold ph-link text-zinc-500 absolute left-3.5 text-base"></i>
+          <i class="ph-bold ph-link text-[#9C9385] absolute left-3.5 text-base"></i>
           
           <button 
             type="button" 
             id="clear-btn" 
-            class="hidden absolute right-3 text-zinc-400 hover:text-white p-1 rounded-full transition"
+            class="hidden absolute right-3 text-[#9C9385] hover:text-[#1C2E24] p-1 rounded-full transition"
           >
             <i class="ph-bold ph-x text-sm"></i>
           </button>
@@ -129,19 +105,19 @@
         <button 
           type="submit" 
           id="search-btn" 
-          class="bg-[#222222] hover:bg-[#272727] active:bg-[#303030] border border-l-0 border-[#303030] text-zinc-300 hover:text-white px-5 sm:px-6 py-2.5 rounded-r-full font-medium text-xs sm:text-sm flex items-center gap-1.5 transition shrink-0"
+          class="bg-[#234B3D] hover:bg-[#1B3B2F] active:bg-[#162E25] border border-l-0 border-[#234B3D] text-white px-5 sm:px-6 py-2.5 rounded-r-xl font-medium text-xs sm:text-sm flex items-center gap-1.5 transition shrink-0 shadow-sm"
         >
           <i class="ph-bold ph-magnifying-glass text-base"></i>
-          <span class="hidden sm:inline">검색</span>
+          <span class="hidden sm:inline">분석 시작</span>
         </button>
       </form>
     </div>
 
     <!-- 우측 상태 배지 -->
     <div class="shrink-0 flex items-center gap-2">
-      <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#1f1f1f] rounded-full border border-[#2f2f2f] text-xs text-zinc-300">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>스마트 캐시 활성</span>
+      <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#F1ECE2] rounded-full border border-[#E5DDD0] text-xs text-[#4A4337]">
+        <span class="w-2 h-2 rounded-full bg-[#4C7A5D] animate-pulse"></span>
+        <span>실시간 캐시 엔진 준비됨</span>
       </div>
     </div>
 
@@ -154,13 +130,24 @@
     <section class="lg:col-span-7 flex flex-col gap-4">
       
       <!-- 유튜브 IFrame 플레이어 래퍼 (16:9 비율) -->
-      <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-[#272727] shadow-2xl">
+      <div class="relative w-full aspect-video bg-[#151413] rounded-2xl overflow-hidden border border-[#D8D0C3] shadow-xl">
         <div id="yt-player" class="w-full h-full"></div>
 
+        <!-- 오버레이 안내 뱃지들 -->
+        <div class="absolute top-3 left-3 px-2.5 py-1 bg-white/95 backdrop-blur rounded text-[10px] font-bold tracking-wider text-[#1C2E24] z-10 pointer-events-none shadow-sm">
+          SMART INDEXER
+        </div>
+        <div class="absolute top-3 right-3 text-[11px] font-mono font-semibold text-zinc-400 z-10 pointer-events-none drop-shadow">
+          1080p Full HD
+        </div>
+        <div class="absolute bottom-3 right-3 text-[11px] font-mono text-[#E0A96D] z-10 pointer-events-none drop-shadow">
+          정밀 대사 타임스탬프 동기화
+        </div>
+
         <!-- 플레이어 초기 로딩/안내 플레이스홀더 -->
-        <div id="player-placeholder" class="absolute inset-0 bg-[#161616] flex flex-col items-center justify-center text-center p-6 gap-3 z-10 transition">
-          <div class="w-14 h-14 rounded-full bg-zinc-800/80 flex items-center justify-center text-red-500 border border-zinc-700">
-            <i class="ph-fill ph-video-camera text-2xl"></i>
+        <div id="player-placeholder" class="absolute inset-0 bg-[#161514] flex flex-col items-center justify-center text-center p-6 gap-3 z-10 transition">
+          <div class="w-14 h-14 rounded-full bg-[#D95338] flex items-center justify-center text-white shadow-lg shadow-[#D95338]/40">
+            <i class="ph-fill ph-play text-2xl ml-0.5"></i>
           </div>
           <div>
             <h3 class="text-sm sm:text-base font-bold text-white mb-1">유튜브 링크를 입력하여 영상을 불러오세요</h3>
@@ -172,27 +159,27 @@
       </div>
 
       <!-- 비디오 인터랙티브 컨트롤 바 (음향 크기 조절 & 타임 이동) -->
-      <div id="video-custom-controls" class="bg-[#1f1f1f] rounded-xl border border-[#2f2f2f] p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+      <div id="video-custom-controls" class="bg-white rounded-xl border border-[#E7E0D4] p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
         
         <!-- 재생 및 탐색 버튼 -->
         <div class="flex items-center gap-2">
-          <button id="ctrl-play-pause" class="w-9 h-9 rounded-lg bg-red-600 hover:bg-red-700 active:bg-red-800 text-white flex items-center justify-center transition shadow">
+          <button id="ctrl-play-pause" class="w-9 h-9 rounded-lg bg-[#234B3D] hover:bg-[#1B3B2F] active:bg-[#162E25] text-white flex items-center justify-center transition shadow">
             <i class="ph-fill ph-play text-sm"></i>
           </button>
-          <button id="ctrl-rewind" class="px-2.5 py-1.5 rounded-lg bg-[#2a2a2a] hover:bg-[#383838] text-xs text-zinc-300 transition flex items-center gap-1">
+          <button id="ctrl-rewind" class="px-2.5 py-1.5 rounded-lg bg-[#F4EFE6] hover:bg-[#EAE3D7] border border-[#E0D7C9] text-xs text-[#4A4337] transition flex items-center gap-1 font-medium">
             <i class="ph-bold ph-rewind"></i>
             <span>-5s</span>
           </button>
-          <button id="ctrl-forward" class="px-2.5 py-1.5 rounded-lg bg-[#2a2a2a] hover:bg-[#383838] text-xs text-zinc-300 transition flex items-center gap-1">
+          <button id="ctrl-forward" class="px-2.5 py-1.5 rounded-lg bg-[#F4EFE6] hover:bg-[#EAE3D7] border border-[#E0D7C9] text-xs text-[#4A4337] transition flex items-center gap-1 font-medium">
             <i class="ph-bold ph-fast-forward"></i>
             <span>+5s</span>
           </button>
-          <span id="video-time-display" class="ml-2 text-xs font-mono text-zinc-400">00:00 / 00:00</span>
+          <span id="video-time-display" class="ml-2 text-xs font-mono text-[#7D7568]">00:00 / 00:00</span>
         </div>
 
         <!-- 🔊 음향 크기(볼륨) 조절 슬라이더 -->
-        <div class="flex items-center gap-2.5 bg-[#161616] px-3 py-1.5 rounded-lg border border-[#2c2c2c]">
-          <button id="ctrl-mute-btn" class="text-zinc-400 hover:text-white transition">
+        <div class="flex items-center gap-2.5 bg-[#F7F3EB] px-3 py-1.5 rounded-lg border border-[#E5DDCF]">
+          <button id="ctrl-mute-btn" class="text-[#5C5346] hover:text-[#1C2E24] transition">
             <i id="ctrl-vol-icon" class="ph-bold ph-speaker-high text-lg"></i>
           </button>
           <input 
@@ -200,28 +187,35 @@
             id="ctrl-volume-slider" 
             min="0" 
             max="100" 
-            value="80" 
-            class="w-24 sm:w-32 h-1.5 bg-[#3f3f3f] rounded-lg appearance-none cursor-pointer accent-red-600"
+            value="85" 
+            class="w-24 sm:w-32 h-1.5 bg-[#D8D0C3] rounded-lg appearance-none cursor-pointer accent-[#234B3D]"
           />
-          <span id="ctrl-volume-label" class="text-xs font-mono text-zinc-300 w-9 text-right">80%</span>
+          <span id="ctrl-volume-label" class="text-xs font-mono text-[#5C5346] w-9 text-right">85%</span>
         </div>
       </div>
 
       <!-- 영상 메타데이터 및 빠른 이동 태그 바 -->
-      <div id="video-info-card" class="hidden bg-[#1f1f1f] rounded-xl border border-[#2f2f2f] p-4">
-        <h2 id="video-title" class="text-lg font-bold text-white mb-2 leading-snug">영상 제목</h2>
-        <div class="flex items-center justify-between text-xs text-zinc-400">
+      <div id="video-info-card" class="hidden bg-white rounded-2xl border border-[#E7E0D4] p-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 mb-2">
+          <h2 id="video-title" class="text-base sm:text-lg font-bold text-[#1C2E24] leading-snug">영상 제목</h2>
+          <button class="shrink-0 px-2.5 py-1 rounded-lg bg-[#FDF1EC] text-[#D95338] border border-[#F6D9CE] text-xs font-semibold flex items-center gap-1 hover:bg-[#FAE4DC] transition">
+            <i class="ph-bold ph-bookmark-simple"></i>
+            <span>색인 북마크</span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-[#7D7568]">
           <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-zinc-700 flex items-center justify-center text-zinc-300 font-bold">C</span>
-            <span id="video-channel" class="font-medium text-zinc-200">채널명</span>
+            <span class="w-5 h-5 rounded-full bg-[#234B3D] flex items-center justify-center text-white text-[10px] font-bold">T</span>
+            <span id="video-channel" class="font-medium text-[#4A4337]">채널명</span>
           </div>
-          <span id="video-duration" class="bg-[#2a2a2a] px-2 py-1 rounded text-zinc-300">00:00</span>
+          <span id="video-duration" class="bg-[#F4EFE6] border border-[#E2D9CB] px-2 py-0.5 rounded text-[#4A4337] font-mono">00:00</span>
         </div>
 
         <!-- 주요 구간 빠른 이동 태그 칩스 -->
-        <div id="quick-tag-bar" class="hidden mt-3.5 pt-3 border-t border-[#2a2a2a]">
-          <div class="flex items-center gap-1.5 mb-2 text-xs font-semibold text-zinc-400">
-            <i class="ph-bold ph-lightning text-red-500"></i>
+        <div id="quick-tag-bar" class="hidden mt-3.5 pt-3 border-t border-[#EAE3D7]">
+          <div class="flex items-center gap-1.5 mb-2 text-xs font-semibold text-[#5C5346]">
+            <i class="ph-bold ph-lightning text-[#D95338]"></i>
             <span>주요 구간 빠른 이동:</span>
           </div>
           <div id="quick-tags-container" class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
@@ -233,79 +227,75 @@
     </section>
 
     <!-- 우측: AI 어시스턴트 & 핵심 색인 & 자막 탭 (5컬럼) -->
-    <section class="lg:col-span-5 flex flex-col h-[750px] bg-[#1f1f1f] rounded-2xl border border-[#2f2f2f] overflow-hidden">
+    <section class="lg:col-span-5 flex flex-col h-[750px] bg-white rounded-2xl border border-[#E7E0D4] overflow-hidden shadow-sm">
       
       <!-- 상단 3개 탭 헤더 -->
-      <div class="flex border-b border-[#2f2f2f] bg-[#161616]">
-        <button id="tab-chat-btn" class="flex-1 py-3 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center justify-center gap-1.5 transition">
-          <i class="ph-bold ph-chat-centered-dots text-base"></i>
-          <span>AI 질문 & 탐색</span>
+      <div class="flex border-b border-[#E2D9CB] bg-[#F1ECE2]">
+        <button id="tab-chat-btn" class="flex-1 py-3 text-xs font-bold text-[#1C2E24] bg-white border-b-2 border-[#234B3D] flex items-center justify-center gap-1.5 transition">
+          <i class="ph-bold ph-chat-centered-dots text-base text-[#234B3D]"></i>
+          <span>AI 질문 &amp; 탐색</span>
         </button>
-        <button id="tab-entities-btn" class="flex-1 py-3 text-xs font-medium text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 transition border-b-2 border-transparent">
-          <i class="ph-bold ph-bookmarks text-base"></i>
-          <span>📌 핵심 색인 목록</span>
+        <button id="tab-entities-btn" class="flex-1 py-3 text-xs font-medium text-[#7D7568] hover:text-[#1C2E24] bg-transparent flex items-center justify-center gap-1.5 transition border-b-2 border-transparent">
+          <i class="ph-bold ph-bookmarks text-base text-[#D95338]"></i>
+          <span>📌 핵심 색인</span>
         </button>
-        <button id="tab-transcript-btn" class="flex-1 py-3 text-xs font-medium text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 transition border-b-2 border-transparent">
+        <button id="tab-transcript-btn" class="flex-1 py-3 text-xs font-medium text-[#7D7568] hover:text-[#1C2E24] bg-transparent flex items-center justify-center gap-1.5 transition border-b-2 border-transparent">
           <i class="ph-bold ph-text-align-left text-base"></i>
-          <span>전체 타임스탬프</span>
+          <span>타임라인 자막</span>
         </button>
       </div>
 
       <!-- 로딩 인디케이터 (초기 숨김) -->
-      <div id="ai-loading" class="hidden p-5 bg-[#252525] border-b border-[#333] flex items-center gap-3">
-        <div class="w-5 h-5 border-2 border-zinc-600 border-t-red-500 rounded-full animate-spin shrink-0"></div>
+      <div id="ai-loading" class="hidden p-4 bg-[#F5EFE6] border-b border-[#E2D9CB] flex items-center gap-3">
+        <div class="w-5 h-5 border-2 border-[#C8BFB0] border-t-[#D95338] rounded-full animate-spin shrink-0"></div>
         <div>
-          <p id="ai-loading-text" class="text-xs font-bold text-zinc-200">오디오 다운로드 및 Gemini 고정밀 분석 중...</p>
-          <p class="text-[11px] text-zinc-400">영상 내 모든 발화 및 범용 핵심 색인(주제/개체/챕터)을 추출하고 있습니다.</p>
+          <p id="ai-loading-text" class="text-xs font-bold text-[#1C2E24]">오디오 다운로드 및 Gemini 고정밀 분석 중...</p>
+          <p class="text-[11px] text-[#7D7568]">영상 내 모든 발화 및 범용 핵심 색인(주제/개체/챕터)을 추출하고 있습니다.</p>
         </div>
       </div>
 
       <!-- ================= 탭 1: AI Q&A 대화 및 장면 탐색창 ================= -->
-      <div id="tab-chat-content" class="flex-1 flex flex-col overflow-hidden">
+      <div id="tab-chat-content" class="flex-1 flex flex-col overflow-hidden bg-[#FAF8F5]">
         
         <!-- 대화 내역 스크롤 영역 -->
         <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
           <!-- 초기 웰컴 메시지 -->
-          <div class="bg-[#272727] p-3.5 rounded-xl border border-[#363636] text-xs text-zinc-300 leading-relaxed">
-            <div class="flex items-center gap-1.5 font-bold text-red-400 mb-1">
-              <i class="ph-bold ph-sparkle"></i>
-              <span>AI 유튜브 영상 어시스턴트</span>
+          <div class="bg-[#FBF9F3] p-3.5 rounded-2xl border border-[#E8E1D4] text-xs text-[#3D3830] leading-relaxed shadow-xs">
+            <div class="flex items-center gap-1.5 font-bold text-[#D95338] mb-1">
+              <i class="ph-bold ph-sparkle text-sm"></i>
+              <span>Gemini 지능형 검색 에이전트</span>
             </div>
-            영상을 검색하시면 전체 내용과 핵심 색인이 분석됩니다.<br>
-            궁금한 점이나 찾고 싶은 장면(예: <em>"주인공이 등장하는 시간 찾아줘"</em>, <em>"영상 3줄 요약해줘"</em>)을 질문하시면 답변과 함께 <strong>타임스탬프 이동 버튼</strong>을 제공합니다!
+            영상 대사와 핵심 토픽을 구조화했습니다. 찾고자 하는 주제나 질문을 입력하시면 즉시 점프할 수 있는 타임태그를 안내합니다.
           </div>
         </div>
 
         <!-- 추천 질문 칩 (도메인 중립 범용 프리셋) -->
-        <div id="suggestion-chips" class="px-3 py-2 flex gap-1.5 overflow-x-auto border-t border-[#2a2a2a] bg-[#1a1a1a] scrollbar-thin">
-          <button class="chip px-2.5 py-1 rounded-full bg-[#2a2a2a] hover:bg-[#383838] text-[11px] text-zinc-300 whitespace-nowrap transition">
-            📋 주요 등장 개체/주제 정리해줘
+        <div id="suggestion-chips" class="px-3 py-2 flex gap-1.5 overflow-x-auto border-t border-[#E7E0D4] bg-[#F5EFE6] scrollbar-thin">
+          <button class="chip px-2.5 py-1 rounded-full bg-white hover:bg-[#FDF1EC] text-[11px] text-[#474136] hover:text-[#D95338] border border-[#E2D9CB] hover:border-[#F6D9CE] whitespace-nowrap transition shadow-xs flex items-center gap-1 font-medium">
+            <span class="text-[#D95338]">📌</span> 이 영상 3줄 요약해줘
           </button>
-          <button class="chip px-2.5 py-1 rounded-full bg-[#2a2a2a] hover:bg-[#383838] text-[11px] text-zinc-300 whitespace-nowrap transition">
-            ⭐ 영상에서 가장 강조된 내용은?
+          <button class="chip px-2.5 py-1 rounded-full bg-white hover:bg-[#FDF1EC] text-[11px] text-[#474136] hover:text-[#D95338] border border-[#E2D9CB] hover:border-[#F6D9CE] whitespace-nowrap transition shadow-xs flex items-center gap-1 font-medium">
+            <span class="text-[#234B3D]">🔍</span> 핵심 키워드 발화 시간
           </button>
-          <button class="chip px-2.5 py-1 rounded-full bg-[#2a2a2a] hover:bg-[#383838] text-[11px] text-zinc-300 whitespace-nowrap transition">
-            📌 이 영상 3줄 요약해줘
-          </button>
-          <button class="chip px-2.5 py-1 rounded-full bg-[#2a2a2a] hover:bg-[#383838] text-[11px] text-zinc-300 whitespace-nowrap transition">
-            🔍 핵심 키워드와 발화 시간 알려줘
+          <button class="chip px-2.5 py-1 rounded-full bg-white hover:bg-[#FDF1EC] text-[11px] text-[#474136] hover:text-[#D95338] border border-[#E2D9CB] hover:border-[#F6D9CE] whitespace-nowrap transition shadow-xs flex items-center gap-1 font-medium">
+            <span class="text-[#5C5243]">📋</span> 소주제별 색인 추출
           </button>
         </div>
 
         <!-- 질문 입력창 -->
-        <form id="chat-form" class="p-3 bg-[#161616] border-t border-[#2f2f2f] flex gap-2">
+        <form id="chat-form" class="p-3 bg-white border-t border-[#E7E0D4] flex gap-2">
           <input 
             type="text" 
             id="chat-input" 
-            placeholder="영상에 대해 질문하거나 특정 내용을 검색하세요..." 
+            placeholder="영상에 대해 질문하거나 타임스탬프를 탐색하세요..." 
             disabled
-            class="flex-1 bg-[#252525] border border-[#383838] focus:border-red-500 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none transition disabled:opacity-50"
+            class="flex-1 bg-[#FAF7F2] border border-[#DCD4C6] focus:border-[#234B3D] focus:ring-1 focus:ring-[#234B3D] rounded-xl px-3.5 py-2.5 text-xs text-[#1C2E24] placeholder-[#9C9385] focus:outline-none transition disabled:opacity-50 shadow-inner"
           />
           <button 
             type="submit" 
             id="chat-send-btn" 
             disabled
-            class="px-4 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 disabled:opacity-50 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center gap-1 shadow-sm"
+            class="px-4 py-2.5 bg-[#D95338] hover:bg-[#C8482E] active:bg-[#B33E26] disabled:opacity-50 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center gap-1 shadow-sm"
           >
             <i class="ph-bold ph-paper-plane-right text-sm"></i>
           </button>
@@ -314,20 +304,20 @@
       </div>
 
       <!-- ================= 탭 2: 핵심 색인/주제 목록 (Entities & Chapters) ================= -->
-      <div id="tab-entities-content" class="hidden flex-1 flex flex-col overflow-hidden">
+      <div id="tab-entities-content" class="hidden flex-1 flex flex-col overflow-hidden bg-[#FAF8F5]">
         
         <!-- 상단 액션 바 -->
-        <div class="p-3 bg-[#161616] border-b border-[#2a2a2a] flex items-center justify-between text-xs">
-          <div class="flex items-center gap-1.5 font-semibold text-zinc-300">
-            <i class="ph-bold ph-bookmarks text-red-500"></i>
-            <span id="entities-count" class="font-mono text-zinc-400">0개 색인 항목</span>
+        <div class="p-3 bg-[#F5EFE6] border-b border-[#E2D9CB] flex items-center justify-between text-xs">
+          <div class="flex items-center gap-1.5 font-semibold text-[#4A4337]">
+            <i class="ph-bold ph-bookmarks text-[#D95338]"></i>
+            <span id="entities-count" class="font-mono text-[#7D7568]">0개 색인 항목</span>
           </div>
-          <span class="text-[11px] text-zinc-500">카드 클릭 시 해당 위치로 점프</span>
+          <span class="text-[11px] text-[#7D7568]">카드 클릭 시 해당 위치로 점프</span>
         </div>
 
         <!-- 핵심 색인 리스트 스크롤 영역 -->
         <div id="entities-list" class="flex-1 overflow-y-auto p-3 space-y-2.5">
-          <div class="text-center py-16 text-xs text-zinc-500">
+          <div class="text-center py-16 text-xs text-[#7D7568]">
             영상을 검색하면 범용 핵심 개체 및 소주제 챕터가 여기에 카드 형태로 표시됩니다.
           </div>
         </div>
@@ -335,13 +325,13 @@
       </div>
 
       <!-- ================= 탭 3: 전체 타임스탬프 자막 목록 ================= -->
-      <div id="tab-transcript-content" class="hidden flex-1 flex flex-col overflow-hidden">
+      <div id="tab-transcript-content" class="hidden flex-1 flex flex-col overflow-hidden bg-[#FAF8F5]">
         
         <!-- 상단 액션 바 -->
-        <div class="p-3 bg-[#161616] border-b border-[#2a2a2a] flex items-center justify-between text-xs">
-          <span id="transcript-count" class="text-zinc-400 font-mono">0개 자막 문장</span>
+        <div class="p-3 bg-[#F5EFE6] border-b border-[#E2D9CB] flex items-center justify-between text-xs">
+          <span id="transcript-count" class="text-[#7D7568] font-mono">0개 자막 문장</span>
           <div class="flex gap-2">
-            <button id="copy-transcript-btn" class="px-2.5 py-1 rounded bg-[#2a2a2a] hover:bg-[#353535] text-zinc-300 transition flex items-center gap-1">
+            <button id="copy-transcript-btn" class="px-2.5 py-1 rounded bg-white hover:bg-[#F5EFE6] border border-[#DCD4C6] text-[#3D3830] transition flex items-center gap-1 shadow-xs">
               <i class="ph-bold ph-copy"></i>
               <span>전문 복사</span>
             </button>
@@ -350,7 +340,7 @@
 
         <!-- 자막 리스트 스크롤 영역 -->
         <div id="transcript-list" class="flex-1 overflow-y-auto p-3 space-y-2">
-          <div class="text-center py-16 text-xs text-zinc-500">
+          <div class="text-center py-16 text-xs text-[#7D7568]">
             영상을 검색하면 Gemini의 초 단위 세부 대사 전문이 여기에 표시됩니다.
           </div>
         </div>
@@ -362,498 +352,6 @@
   </main>
 
   <!-- ================= 3. 프론트엔드 비즈니스 로직 ================= -->
-  <script>
-    // 상태 변수
-    let ytPlayer = null;
-    let isPlayerReady = false;
-    let currentVideoData = null;
-    let timeUpdateInterval = null;
-
-    // DOM 요소
-    const urlInput = document.getElementById('url-input');
-    const searchForm = document.getElementById('search-form');
-    const searchBtn = document.getElementById('search-btn');
-    const clearBtn = document.getElementById('clear-btn');
-    const playerPlaceholder = document.getElementById('player-placeholder');
-
-    const ctrlPlayPause = document.getElementById('ctrl-play-pause');
-    const ctrlRewind = document.getElementById('ctrl-rewind');
-    const ctrlForward = document.getElementById('ctrl-forward');
-    const ctrlMuteBtn = document.getElementById('ctrl-mute-btn');
-    const ctrlVolIcon = document.getElementById('ctrl-vol-icon');
-    const ctrlVolumeSlider = document.getElementById('ctrl-volume-slider');
-    const ctrlVolumeLabel = document.getElementById('ctrl-volume-label');
-    const videoTimeDisplay = document.getElementById('video-time-display');
-
-    const videoInfoCard = document.getElementById('video-info-card');
-    const videoTitle = document.getElementById('video-title');
-    const videoChannel = document.getElementById('video-channel');
-    const videoDuration = document.getElementById('video-duration');
-    const quickTagBar = document.getElementById('quick-tag-bar');
-    const quickTagsContainer = document.getElementById('quick-tags-container');
-
-    const tabChatBtn = document.getElementById('tab-chat-btn');
-    const tabEntitiesBtn = document.getElementById('tab-entities-btn');
-    const tabTranscriptBtn = document.getElementById('tab-transcript-btn');
-
-    const tabChatContent = document.getElementById('tab-chat-content');
-    const tabEntitiesContent = document.getElementById('tab-entities-content');
-    const tabTranscriptContent = document.getElementById('tab-transcript-content');
-
-    const aiLoading = document.getElementById('ai-loading');
-    const aiLoadingText = document.getElementById('ai-loading-text');
-    const chatMessages = document.getElementById('chat-messages');
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatSendBtn = document.getElementById('chat-send-btn');
-
-    const entitiesList = document.getElementById('entities-list');
-    const entitiesCount = document.getElementById('entities-count');
-
-    const transcriptList = document.getElementById('transcript-list');
-    const transcriptCount = document.getElementById('transcript-count');
-    const copyTranscriptBtn = document.getElementById('copy-transcript-btn');
-
-    // YouTube IFrame API 준비 완료 콜백
-    function onYouTubeIframeAPIReady() {
-      console.log("[YouTube API] IFrame API Ready.");
-    }
-
-    // 유튜브 플레이어 초기화
-    function initPlayer(videoId) {
-      if (ytPlayer) {
-        ytPlayer.loadVideoById(videoId);
-        return;
-      }
-
-      ytPlayer = new YT.Player('yt-player', {
-        videoId: videoId,
-        playerVars: {
-          autoplay: 1,
-          controls: 1,
-          modestbranding: 1,
-          rel: 0,
-        },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange
-        }
-      });
-    }
-
-    function onPlayerReady(event) {
-      isPlayerReady = true;
-      playerPlaceholder.classList.add('hidden');
-      // 초기 볼륨 설정
-      const vol = parseInt(ctrlVolumeSlider.value, 10);
-      ytPlayer.setVolume(vol);
-
-      // 주기적으로 현재 시간 동기화
-      if (timeUpdateInterval) clearInterval(timeUpdateInterval);
-      timeUpdateInterval = setInterval(updateCurrentTimeDisplay, 500);
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.PLAYING) {
-        ctrlPlayPause.innerHTML = '<i class="ph-fill ph-pause text-sm"></i>';
-      } else {
-        ctrlPlayPause.innerHTML = '<i class="ph-fill ph-play text-sm"></i>';
-      }
-    }
-
-    function updateCurrentTimeDisplay() {
-      if (!isPlayerReady || !ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
-      const cur = Math.floor(ytPlayer.getCurrentTime() || 0);
-      const total = Math.floor(ytPlayer.getDuration() || 0);
-      videoTimeDisplay.textContent = `${formatTime(cur)} / ${formatTime(total)}`;
-    }
-
-    function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-    }
-
-    // 특정 초로 이동 및 자동 재생 (Seek & Play)
-    window.seekAndPlay = function(seconds) {
-      if (!isPlayerReady || !ytPlayer) return;
-      ytPlayer.seekTo(seconds, true);
-      ytPlayer.playVideo();
-    };
-
-    // 컨트롤러 이벤트
-    ctrlPlayPause.addEventListener('click', () => {
-      if (!isPlayerReady || !ytPlayer) return;
-      const state = ytPlayer.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        ytPlayer.pauseVideo();
-      } else {
-        ytPlayer.playVideo();
-      }
-    });
-
-    ctrlRewind.addEventListener('click', () => {
-      if (!isPlayerReady || !ytPlayer) return;
-      const cur = ytPlayer.getCurrentTime();
-      ytPlayer.seekTo(Math.max(0, cur - 5), true);
-    });
-
-    ctrlForward.addEventListener('click', () => {
-      if (!isPlayerReady || !ytPlayer) return;
-      const cur = ytPlayer.getCurrentTime();
-      ytPlayer.seekTo(cur + 5, true);
-    });
-
-    // 🔊 볼륨 조절 슬라이더
-    ctrlVolumeSlider.addEventListener('input', (e) => {
-      const vol = parseInt(e.target.value, 10);
-      ctrlVolumeLabel.textContent = `${vol}%`;
-      if (isPlayerReady && ytPlayer) {
-        ytPlayer.setVolume(vol);
-        if (vol === 0) {
-          ytPlayer.mute();
-          ctrlVolIcon.className = "ph-bold ph-speaker-slash text-lg text-red-500";
-        } else {
-          ytPlayer.unMute();
-          ctrlVolIcon.className = vol > 50 ? "ph-bold ph-speaker-high text-lg" : "ph-bold ph-speaker-low text-lg";
-        }
-      }
-    });
-
-    ctrlMuteBtn.addEventListener('click', () => {
-      if (!isPlayerReady || !ytPlayer) return;
-      if (ytPlayer.isMuted()) {
-        ytPlayer.unMute();
-        const vol = parseInt(ctrlVolumeSlider.value, 10) || 50;
-        ytPlayer.setVolume(vol);
-        ctrlVolIcon.className = "ph-bold ph-speaker-high text-lg";
-      } else {
-        ytPlayer.mute();
-        ctrlVolIcon.className = "ph-bold ph-speaker-slash text-lg text-red-500";
-      }
-    });
-
-    // 검색창 입력 이벤트
-    urlInput.addEventListener('input', () => {
-      clearBtn.classList.toggle('hidden', !urlInput.value);
-    });
-    clearBtn.addEventListener('click', () => {
-      urlInput.value = '';
-      clearBtn.classList.add('hidden');
-      urlInput.focus();
-    });
-
-    // 검색 제출: 오디오 다운로드 & Gemini 분석 처리
-    searchForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const url = urlInput.value.trim();
-      if (!url) return;
-
-      searchBtn.disabled = true;
-      searchBtn.classList.add('opacity-50');
-      aiLoading.classList.remove('hidden');
-      aiLoadingText.textContent = "오디오 분석 및 Gemini 핵심 색인 & 타임스탬프 추출 중...";
-
-      try {
-        const res = await fetch('/api/process', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url })
-        });
-
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({ detail: '처리 실패' }));
-          throw new Error(err.detail || '영상 처리에 실패했습니다.');
-        }
-
-        const data = await res.json();
-        currentVideoData = data;
-
-        // 플레이어에 영상 로드
-        initPlayer(data.video_id);
-
-        // 메타데이터 렌더링
-        videoTitle.textContent = data.title;
-        videoChannel.textContent = data.channel;
-        videoDuration.textContent = formatTime(data.duration);
-        videoInfoCard.classList.remove('hidden');
-
-        // 1. 핵심 색인 목록 렌더링
-        renderEntities(data.entities);
-
-        // 2. 주요 구간 빠른 이동 태그 칩스 렌더링
-        renderQuickTags(data.entities, data.segments);
-
-        // 3. 전체 자막 렌더링
-        renderTranscripts(data.segments);
-
-        // 채팅 입력창 활성화
-        chatInput.disabled = false;
-        chatSendBtn.disabled = false;
-        chatInput.placeholder = `'${data.title}'에 대해 질문하세요...`;
-
-        // 완료 안내 메시지 추가 (캐시 여부 분기)
-        if (data.from_cache) {
-          appendAIMessage(`⚡ **[CSV 캐시 로딩]** 이전에 분석하여 저장된 영상입니다!\n\nGemini 재호출 없이 **CSV 파일(transcripts_cache.csv)**에서 **${data.entities?.length || 0}개 핵심 색인** 및 **${data.segments.length}개 자막**을 즉시 불러왔습니다.\n\n궁금한 점이나 찾고 싶은 장면을 바로 질문해보세요!`);
-        } else {
-          appendAIMessage(`✅ **${data.title}** 신규 분석 완료!\n\n총 **${data.entities?.length || 0}개 핵심 색인**과 **${data.segments.length}개**의 타임스탬프 자막이 추출되어 **CSV 파일(transcripts_cache.csv)**에 저장되었습니다.\n\n다음 번에 동일한 링크를 입력하시면 대기 시간 없이 즉시 불러옵니다!`);
-        }
-
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        aiLoading.classList.add('hidden');
-        searchBtn.disabled = false;
-        searchBtn.classList.remove('opacity-50');
-      }
-    });
-
-    // 1. 핵심 색인 목록(Entities/Chapters) 렌더링
-    function renderEntities(entities) {
-      entitiesList.innerHTML = '';
-      if (!entities || entities.length === 0) {
-        entitiesCount.textContent = '0개 색인 항목';
-        entitiesList.innerHTML = `
-          <div class="p-8 text-center text-zinc-400 text-xs">
-            <i class="ph-bold ph-info text-2xl text-zinc-500 mb-2 block"></i>
-            <p class="font-medium text-zinc-300">감지된 별도 소주제 색인이 없습니다.</p>
-            <p class="text-[11px] text-zinc-500 mt-1">우측 '전체 타임스탬프' 탭에서 시간대별 상세 대사를 확인하세요.</p>
-          </div>
-        `;
-        return;
-      }
-
-      entitiesCount.textContent = `${entities.length}개 색인 항목`;
-
-      entities.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = "group p-3.5 bg-[#252525] hover:bg-[#2e2e2e] rounded-xl border border-[#333] hover:border-red-500/50 cursor-pointer transition flex items-start gap-3 shadow-sm";
-        card.onclick = () => seekAndPlay(item.seconds || 0);
-
-        card.innerHTML = `
-          <button class="shrink-0 px-2.5 py-1 bg-red-600/20 group-hover:bg-red-600 text-red-400 group-hover:text-white rounded-lg text-xs font-mono font-bold flex items-center gap-1 transition">
-            <span>${item.time_str || '00:00'}</span>
-            <i class="ph-fill ph-play text-[10px]"></i>
-          </button>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <h4 class="text-xs font-bold text-white group-hover:text-red-400 transition truncate">${escapeHtml(item.title || '주제')}</h4>
-            </div>
-            <p class="text-[11px] text-zinc-400 leading-relaxed">${escapeHtml(item.summary || '')}</p>
-          </div>
-        `;
-        entitiesList.appendChild(card);
-      });
-    }
-
-    // 2. 주요 구간 빠른 이동 태그(Chips) 렌더링
-    function renderQuickTags(entities, segments) {
-      quickTagsContainer.innerHTML = '';
-      
-      const tags = (entities && entities.length > 0) 
-        ? entities 
-        : (segments || []).slice(0, 6).map(s => ({
-            time_str: s.timestamp,
-            seconds: s.start_seconds,
-            title: s.text.length > 15 ? s.text.slice(0, 15) + '...' : s.text
-          }));
-
-      if (!tags || tags.length === 0) {
-        quickTagBar.classList.add('hidden');
-        return;
-      }
-
-      quickTagBar.classList.remove('hidden');
-
-      tags.forEach(t => {
-        const chip = document.createElement('button');
-        chip.className = "px-2.5 py-1 bg-[#252525] hover:bg-red-600/20 hover:border-red-500/50 border border-[#383838] rounded-lg text-xs text-zinc-300 hover:text-red-400 whitespace-nowrap transition flex items-center gap-1.5 font-mono shrink-0";
-        chip.onclick = () => seekAndPlay(t.seconds || 0);
-        chip.innerHTML = `
-          <span class="text-red-400 font-bold">#${t.time_str || '00:00'}</span>
-          <span class="text-zinc-200">${escapeHtml(t.title || '')}</span>
-        `;
-        quickTagsContainer.appendChild(chip);
-      });
-    }
-
-    // 3. 전체 자막 목록 렌더링
-    function renderTranscripts(segments) {
-      transcriptList.innerHTML = '';
-      transcriptCount.textContent = `${segments.length}개 자막 문장`;
-
-      if (!segments || segments.length === 0) {
-        transcriptList.innerHTML = '<div class="text-center py-8 text-xs text-zinc-500">추출된 자막이 없습니다.</div>';
-        return;
-      }
-
-      segments.forEach((s) => {
-        const item = document.createElement('div');
-        item.className = "p-2.5 rounded-lg bg-[#272727] hover:bg-[#323232] transition border border-[#333] flex items-start gap-3 cursor-pointer group";
-        item.onclick = () => seekAndPlay(s.start_seconds);
-
-        item.innerHTML = `
-          <button class="px-2 py-0.5 rounded bg-red-600/20 text-red-400 group-hover:bg-red-600 group-hover:text-white text-[11px] font-mono font-bold transition whitespace-nowrap">
-            ${s.timestamp} ▶
-          </button>
-          <div class="flex-1 text-xs">
-            <span class="font-semibold text-zinc-400 text-[10px] mr-1">[${s.speaker}]</span>
-            <span class="text-zinc-200">${s.text}</span>
-          </div>
-        `;
-        transcriptList.appendChild(item);
-      });
-    }
-
-    // 3-way 탭 전환 이벤트
-    function switchTab(activeTab) {
-      const tabs = [
-        { name: 'chat', btn: tabChatBtn, content: tabChatContent },
-        { name: 'entities', btn: tabEntitiesBtn, content: tabEntitiesContent },
-        { name: 'transcript', btn: tabTranscriptBtn, content: tabTranscriptContent }
-      ];
-      tabs.forEach(t => {
-        if (t.name === activeTab) {
-          t.btn.className = "flex-1 py-3 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center justify-center gap-1.5 transition";
-          t.content.classList.remove('hidden');
-        } else {
-          t.btn.className = "flex-1 py-3 text-xs font-medium text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 transition border-b-2 border-transparent";
-          t.content.classList.add('hidden');
-        }
-      });
-    }
-
-    tabChatBtn.addEventListener('click', () => switchTab('chat'));
-    tabEntitiesBtn.addEventListener('click', () => switchTab('entities'));
-    tabTranscriptBtn.addEventListener('click', () => switchTab('transcript'));
-
-    // 채팅 전송 (Gemini 3.8 Flash 질의응답)
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const q = chatInput.value.trim();
-      if (!q || !currentVideoData) return;
-
-      appendUserMessage(q);
-      chatInput.value = '';
-      chatInput.disabled = true;
-      chatSendBtn.disabled = true;
-
-      // 타이핑 로딩 표시
-      const loadingBubble = appendLoadingBubble();
-
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            question: q,
-            video_id: currentVideoData.video_id,
-            transcript_summary: currentVideoData.full_text,
-            segments: currentVideoData.segments,
-            entities: currentVideoData.entities || []
-          })
-        });
-
-        if (!res.ok) throw new Error('답변 생성 실패');
-        const data = await res.json();
-
-        loadingBubble.remove();
-        appendAIMessage(data.answer, data.timestamps);
-
-      } catch (err) {
-        loadingBubble.remove();
-        appendAIMessage(`⚠️ 오류가 발생했습니다: ${err.message}`);
-      } finally {
-        chatInput.disabled = false;
-        chatSendBtn.disabled = false;
-        chatInput.focus();
-      }
-    });
-
-    // 추천 질문 클릭
-    document.querySelectorAll('.chip').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (!currentVideoData) {
-          alert('먼저 상단에서 유튜브 영상을 검색해주세요!');
-          return;
-        }
-        chatInput.value = btn.textContent.replace(/[📌⏱️🔍📋⭐]/g, '').trim();
-        chatForm.dispatchEvent(new Event('submit'));
-      });
-    });
-
-    function appendUserMessage(text) {
-      const bubble = document.createElement('div');
-      bubble.className = "flex justify-end";
-      bubble.innerHTML = `
-        <div class="bg-red-600 text-white rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[85%] text-xs shadow">
-          ${escapeHtml(text)}
-        </div>
-      `;
-      chatMessages.appendChild(bubble);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function appendAIMessage(markdownText, timestamps = []) {
-      const bubble = document.createElement('div');
-      bubble.className = "flex justify-start gap-2.5 items-start";
-
-      // 타임스탬프 문자열 [MM:SS] 또는 MM:SS를 클릭 가능한 버튼으로 치환
-      let parsedHtml = marked.parse(markdownText);
-      parsedHtml = parsedHtml.replace(/\[?(\d{1,2}:\d{2})\]?/g, (match, p1) => {
-        const parts = p1.split(':');
-        const secs = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
-        return `<button onclick="seekAndPlay(${secs})" class="inline-flex items-center gap-1 px-2 py-0.5 mx-0.5 rounded bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white font-mono text-[11px] font-bold transition">▶ ${p1}</button>`;
-      });
-
-      bubble.innerHTML = `
-        <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white text-xs shrink-0 mt-0.5">
-          <i class="ph-bold ph-sparkle text-xs"></i>
-        </div>
-        <div class="bg-[#272727] text-zinc-200 border border-[#383838] rounded-2xl rounded-tl-none p-3.5 max-w-[90%] text-xs markdown-body shadow">
-          ${parsedHtml}
-        </div>
-      `;
-      chatMessages.appendChild(bubble);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function appendLoadingBubble() {
-      const bubble = document.createElement('div');
-      bubble.className = "flex justify-start gap-2.5 items-center";
-      bubble.innerHTML = `
-        <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white text-xs shrink-0">
-          <i class="ph-bold ph-sparkle text-xs"></i>
-        </div>
-        <div class="bg-[#272727] border border-[#383838] rounded-2xl rounded-tl-none px-4 py-2.5 text-xs text-zinc-400 flex items-center gap-2">
-          <div class="w-3 h-3 border-2 border-zinc-500 border-t-red-500 rounded-full animate-spin"></div>
-          <span>Gemini 3.8 Flash 답변 작성 중...</span>
-        </div>
-      `;
-      chatMessages.appendChild(bubble);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      return bubble;
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
-    }
-
-    // 전문 복사
-    copyTranscriptBtn.addEventListener('click', async () => {
-      if (!currentVideoData || !currentVideoData.full_text) return;
-      try {
-        await navigator.clipboard.writeText(currentVideoData.full_text);
-        copyTranscriptBtn.innerHTML = '<i class="ph-bold ph-check text-emerald-400"></i><span>복사 완료!</span>';
-        setTimeout(() => {
-          copyTranscriptBtn.innerHTML = '<i class="ph-bold ph-copy"></i><span>전문 복사</span>';
-        }, 2000);
-      } catch (err) {
-        alert('복사 실패');
-      }
-    });
-  </script>
+  <script src="/static/app.js"></script>
 </body>
 </html>

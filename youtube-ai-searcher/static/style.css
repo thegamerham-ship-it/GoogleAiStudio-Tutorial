@@ -1,0 +1,49 @@
+﻿/* Warm Editorial 커스텀 스크롤바 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F0EA;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8D0C3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C0B7A8;
+}
+
+/* 마크다운 렌더링 스타일 */
+.markdown-body p {
+  margin-bottom: 0.5rem;
+  color: #3D3935;
+  line-height: 1.6;
+}
+.markdown-body p:last-child {
+  margin-bottom: 0;
+}
+.markdown-body strong {
+  color: #D95338;
+  font-weight: 700;
+}
+.markdown-body ul {
+  list-style-type: disc;
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #3D3935;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #3D3935;
+}
+.markdown-body code {
+  background-color: #F4EFE6;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  color: #234B3D;
+  font-weight: 600;
+  font-family: monospace;
+}
